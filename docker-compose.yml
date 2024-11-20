@@ -1,0 +1,43 @@
+services:
+  laravel:
+    container_name: 'laravel'
+    image: "bitnami/laravel:latest"
+    tty: true
+    environment:
+      - LARAVEL_DATABASE_TYPE=mysql
+      - LARAVEL_DATABASE_HOST=mariadb
+      - LARAVEL_DATABASE_PORT_NUMBER=3306
+      - LARAVEL_DATABASE_NAME=blockchain
+      - LARAVEL_DATABASE_USER=blockchain
+      - LARAVEL_DATABASE_PASSWORD=blockchain
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backendCode:/app
+    networks:
+      - blockchain
+
+
+  mariadb:
+    container_name: 'mariadb'
+    image: "bitnami/mariadb:latest"
+    tty: true
+    environment:
+      - MARIADB_USER=blockchain
+      - MARIADB_PASSWORD=nil
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_DATABASE=blockchain
+      - MARIADB_MASTER_PORT_NUMBER=3306
+    ports:
+      - 3306:3306
+    networks:
+      - blockchain
+    
+  
+networks:
+  blockchain:
+    driver: bridge
+
+volumes:
+  backendCode:
+    driver: local
